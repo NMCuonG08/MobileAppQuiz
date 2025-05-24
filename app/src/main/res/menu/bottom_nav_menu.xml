@@ -1,0 +1,26 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/btn_home"
+        android:layout_weight="1"
+        android:padding="12dp"
+        android:src="@drawable/ic_home"
+        android:tint="#757575"
+        android:title="Home"/>
+    <item
+        android:id="@+id/btn_chat"
+        android:icon="@drawable/ic_chat"
+        android:title="Chat"
+        android:layout_weight="1"
+        android:padding="12dp"
+        android:src="@drawable/ic_chat"
+        android:tint="#757575" />
+    <item
+        android:id="@+id/btn_search"
+        android:title="Search"
+        android:layout_weight="1"
+        android:padding="12dp"
+        android:src="@drawable/ic_search"
+        android:tint="#757575" />
+</menu>
+
+

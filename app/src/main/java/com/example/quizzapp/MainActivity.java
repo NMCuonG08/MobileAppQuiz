@@ -17,9 +17,12 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.quizzapp.adapters.ChatAdapter;
 import com.example.quizzapp.adapters.QuizAdapter;
 import com.example.quizzapp.api.ApiClient;
 import com.example.quizzapp.api.ApiInterface;
+import com.example.quizzapp.models.Message;
 import com.example.quizzapp.models.Quiz;
 import java.util.ArrayList;
 import java.util.List;

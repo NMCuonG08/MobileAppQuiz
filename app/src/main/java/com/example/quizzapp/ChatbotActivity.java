@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Spanned;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -34,6 +35,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.noties.markwon.Markwon;
+
 public class ChatbotActivity extends AppCompatActivity {
     private Context context;
     private EditText messageEditText;
@@ -43,6 +46,9 @@ public class ChatbotActivity extends AppCompatActivity {
     private List<Message> messageList;
     private RequestQueue requestQueue;
     private ImageView btn_main;
+
+    private ImageView btn_user;
+    private ImageView btn_history;
     private String sessionId;
 
     @SuppressLint("MissingInflatedId")
@@ -86,6 +92,17 @@ public class ChatbotActivity extends AppCompatActivity {
             Intent intent = new Intent(ChatbotActivity.this, MainActivity.class);
             startActivity(intent);
         });
+        btn_history = findViewById(R.id.history);
+        btn_history.setOnClickListener(v -> {
+            Intent intent = new Intent(ChatbotActivity.this, HistoryActivity.class);
+            startActivity(intent);
+        });
+        btn_user = findViewById(R.id.btn_user);
+        btn_user.setOnClickListener(v -> {
+            Intent intent = new Intent(ChatbotActivity.this, UserActivity.class);
+            startActivity(intent);
+        });
+
     }
 
     private void sendMessage() {
@@ -190,9 +207,9 @@ public class ChatbotActivity extends AppCompatActivity {
                     Markwon markwon = Markwon.create(context);
                     Spanned markdownFormatted = markwon.toMarkdown(botReply);
 
-                    messageList.add(new Message(markdownFormatted, "bot"));
+                    messageList.add(new Message(markdownFormatted.toString(), "bot"));
 
-                    messageList.add(new Message(botReply, "bot"));
+//                    messageList.add(new Message(botReply, "bot"));
 
                     chatAdapter.notifyItemInserted(messageList.size() - 1);
                     chatRecyclerView.scrollToPosition(messageList.size() - 1);

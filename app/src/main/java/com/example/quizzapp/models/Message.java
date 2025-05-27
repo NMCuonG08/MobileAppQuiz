@@ -1,7 +1,5 @@
 package com.example.quizzapp.models;
 
-import android.text.Spanned;
-
 public class Message {
     private String content;
     private String sender;

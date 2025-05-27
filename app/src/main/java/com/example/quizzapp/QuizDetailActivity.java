@@ -31,7 +31,9 @@ public class QuizDetailActivity extends AppCompatActivity {
 
     private Button btn_start;
 
-    private String quizId; // Thay đổi từ long thành String vì MongoDB sử dụng ObjectId
+
+    private String quizId;
+    private String quizTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +52,7 @@ public class QuizDetailActivity extends AppCompatActivity {
 
         // Get quiz ID from intent
         quizId = getIntent().getStringExtra("QUIZ_ID");
+        quizTitle = getIntent().getStringExtra("QUIZ_TITLE");
         if (quizId == null || quizId.isEmpty()) {
             Toast.makeText(this, "Invalid quiz", Toast.LENGTH_SHORT).show();
             finish();
@@ -66,6 +69,7 @@ public class QuizDetailActivity extends AppCompatActivity {
                 // Tạo Intent để mở QuizPlayActivity
                 Intent intent = new Intent(QuizDetailActivity.this, QuizPlayActivity.class);
                 intent.putExtra("QUIZ_ID", quizId);
+                intent.putExtra("QUIZ_TITLE", quizTitle);
                 startActivity(intent);
             }
         });

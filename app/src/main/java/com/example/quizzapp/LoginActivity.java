@@ -2,16 +2,19 @@ package com.example.quizzapp;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.EditText;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.quizzapp.api.NetworkUtils;
+import com.example.quizzapp.managers.SessionManager;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText etUsername, etPassword;
     private Button btnLogin;
     private SessionManager sessionManager;
-    private ApiService apiService;
+    private NetworkUtils networkUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,25 +22,26 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         sessionManager = new SessionManager(this);
-        apiService = new ApiService();
+        networkUtils = new NetworkUtils(this);
 
-        // Kiểm tra đã đăng nhập chưa
+        // Kiểm tra nếu đã đăng nhập rồi thì chuyển thẳng đến UserActivity
         if (sessionManager.isLoggedIn()) {
-            goToMainActivity();
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
             return;
         }
 
         initViews();
-        setupListeners();
+        setupClickListeners();
     }
 
     private void initViews() {
-        etUsername = findViewById(R.id.etUsername);
-        etPassword = findViewById(R.id.etPassword);
-        btnLogin = findViewById(R.id.btnLogin);
+        etUsername = findViewById(R.id.et_username);
+        etPassword = findViewById(R.id.et_password);
+        btnLogin = findViewById(R.id.btn_login);
     }
 
-    private void setupListeners() {
+    private void setupClickListeners() {
         btnLogin.setOnClickListener(v -> {
             String username = etUsername.getText().toString().trim();
             String password = etPassword.getText().toString().trim();
@@ -47,49 +51,35 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
 
-            performLogin(username, password);
+            login(username, password);
         });
     }
 
-    private void performLogin(String username, String password) {
+    private void login(String username, String password) {
         btnLogin.setEnabled(false);
         btnLogin.setText("Đang đăng nhập...");
 
-        apiService.login(username, password, new ApiService.LoginCallback() {
+        networkUtils.login(username, password, new NetworkUtils.LoginCallback() {
             @Override
-            public void onSuccess(LoginResponse response) {
+            public void onSuccess(String sessionId, String userInfo) {
                 runOnUiThread(() -> {
-                    if (response.isSuccess()) {
-                        // Lưu session
-                        sessionManager.createLoginSession(
-                                response.getSessionId(),
-                                response.getUser().getUsername()
-                        );
+                    sessionManager.saveSession(sessionId, userInfo);
+                    Toast.makeText(LoginActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
 
-                        Toast.makeText(LoginActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
-                        goToMainActivity();
-                    } else {
-                        showError(response.getMessage());
-                    }
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
                 });
             }
 
             @Override
             public void onError(String error) {
-                runOnUiThread(() -> showError(error));
+                runOnUiThread(() -> {
+                    Toast.makeText(LoginActivity.this, "Lỗi: " + error, Toast.LENGTH_SHORT).show();
+                    btnLogin.setEnabled(true);
+                    btnLogin.setText("Đăng nhập");
+                });
             }
         });
-    }
-
-    private void showError(String error) {
-        btnLogin.setEnabled(true);
-        btnLogin.setText("Đăng nhập");
-        Toast.makeText(this, error, Toast.LENGTH_LONG).show();
-    }
-
-    private void goToMainActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        finish();
     }
 }

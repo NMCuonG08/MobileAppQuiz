@@ -38,8 +38,10 @@ public class MainActivity extends AppCompatActivity {
     private EditText searchEditText;
     private List<Quiz> allQuizzes = new ArrayList<>();
     private List<Quiz> filteredQuizzes = new ArrayList<>();
-
+    private ImageView btn_user;
     private ImageView btn_chat;
+
+    private ImageView btn_history;
 
 
     @SuppressLint("MissingInflatedId")
@@ -63,12 +65,22 @@ public class MainActivity extends AppCompatActivity {
 
         fetchQuizzes();
 
+        btn_user  =findViewById(R.id.btn_user);
+        btn_user.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, UserActivity.class);
+            startActivity(intent);
+        });
+
         btn_chat = findViewById(R.id.btn_chat);
         btn_chat.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, ChatbotActivity.class);
             startActivity(intent);
         });
-
+        btn_history = findViewById(R.id.history);
+        btn_history.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
+            startActivity(intent);
+        });
 
     }
 

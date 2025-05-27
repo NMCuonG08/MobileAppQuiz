@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">quizzapp</string>
+    <string name="login_title">Đăng nhập</string>
+    <string name="username_hint">Tên đăng nhập</string>
+    <string name="password_hint">Mật khẩu</string>
+    <string name="login_button">Đăng nhập</string>
+    <string name="logout_button">Đăng xuất</string>
+    <string name="user_info_title">Thông tin người dùng</string>
 </resources>

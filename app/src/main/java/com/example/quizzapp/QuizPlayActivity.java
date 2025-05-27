@@ -21,8 +21,10 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.quizzapp.api.ApiClient;
 import com.example.quizzapp.api.ApiInterface;
+import com.example.quizzapp.managers.QuizHistoryManager;
 import com.example.quizzapp.models.Option;
 import com.example.quizzapp.models.Question;
+import com.example.quizzapp.models.QuizResult;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -35,7 +37,8 @@ import retrofit2.Response;
 
 public class QuizPlayActivity extends AppCompatActivity {
     private static final String TAG = "QuizPlayActivity";
-
+    private QuizHistoryManager historyManager;
+    private String quizTitle;
     // UI Components
     private TextView questionCounter, timeRemaining, questionPoints, questionText, questionDescription;
     private ImageView questionImage;
@@ -70,12 +73,13 @@ public class QuizPlayActivity extends AppCompatActivity {
 
         // Lấy quiz ID từ Intent
         quizId = getIntent().getStringExtra("QUIZ_ID");
+        quizTitle = getIntent().getStringExtra("QUIZ_TITLE");
         if (quizId == null || quizId.isEmpty()) {
             Toast.makeText(this, "Lỗi: Không tìm thấy quiz", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
-
+        historyManager = new QuizHistoryManager(this);
         // Thiết lập sự kiện cho các nút
         setupButtonListeners();
 
@@ -636,15 +640,39 @@ public class QuizPlayActivity extends AppCompatActivity {
             timer.cancel();
         }
 
+        // Lưu kết quả vào lịch sử local
+        saveQuizResultToHistory();
+
         // Tạo Intent để mở QuizResultActivity
         Intent intent = new Intent(this, QuizResultActivity.class);
         intent.putExtra("TOTAL_QUESTIONS", questions.size());
         intent.putExtra("CORRECT_ANSWERS", correctAnswers);
         intent.putExtra("TOTAL_SCORE", totalScore);
         intent.putExtra("QUIZ_ID", quizId);
+        intent.putExtra("QUIZ_TITLE", quizTitle);
 
         startActivity(intent);
         finish(); // Đóng QuizPlayActivity
+    }
+    private void saveQuizResultToHistory() {
+        try {
+            // Tạo QuizResult object
+            QuizResult result = new QuizResult(
+                    quizId,
+                    quizTitle != null ? quizTitle : "Unknown Quiz",
+                    questions.size(),
+                    correctAnswers,
+                    totalScore
+            );
+
+            // Lưu vào history manager
+            historyManager.saveQuizResult(result);
+
+            Log.d(TAG, "Quiz result saved to history: " + result.getScoreText());
+        } catch (Exception e) {
+            Log.e(TAG, "Error saving quiz result to history", e);
+            // Không hiển thị lỗi cho user vì đây không phải chức năng chính
+        }
     }
 
     @Override

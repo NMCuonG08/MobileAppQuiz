@@ -1,70 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="24dp">
 
-    >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Thông tin người dùng"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="24dp" />
 
-    <!-- Top App Bar -->
-    <!-- Chat Display Area -->
+    <ScrollView
+        android:layout_width="358dp"
+        android:layout_height="485dp"
+        android:layout_weight="1">
 
-    <!-- Input Area -->
+        <TextView
+            android:id="@+id/tv_user_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_user_info"
+            android:lineSpacingExtra="4dp"
+            android:padding="16dp"
+            android:text="Đang tải thông tin..."
+            android:textSize="16sp" />
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/topAppBar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:layout_marginTop="20dp"
-        android:background="?attr/colorPrimary"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:title="Chatbot"
-        app:titleTextColor="@android:color/white" />
+    </ScrollView>
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/chatRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:clipToPadding="false"
-        android:padding="12dp"
-        android:scrollbars="vertical" />
-
-    <LinearLayout
-        android:id="@+id/inputLayout"
+    <Button
+        android:id="@+id/btn_logout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="8dp"
-        android:background="#FFFFFF"
-        android:elevation="4dp">
-
-        <EditText
-            android:id="@+id/messageEditText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="Type your message..."
-            android:padding="12dp"
-            android:background="@drawable/edittext"
-            android:textColor="#000000"
-            android:textSize="16sp"
-            android:inputType="text"/>
-
-        <ImageButton
-            android:id="@+id/sendButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_menu_send"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Send"
-            app:tint="#007AFF"
-            android:padding="12dp"/>
-    </LinearLayout>
+        android:layout_marginTop="44dp"
+        android:backgroundTint="@color/logout_color"
+        android:text="Đăng xuất"
+        android:textSize="16sp" />
     <LinearLayout
         android:id="@+id/bottomNavigation"
         android:layout_width="match_parent"
@@ -120,6 +94,5 @@
             android:src="@drawable/ic_search"
             app:tint="#757575" />
     </LinearLayout>
-
 
 </LinearLayout>

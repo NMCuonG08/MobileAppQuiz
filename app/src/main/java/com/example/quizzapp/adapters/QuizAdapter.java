@@ -62,6 +62,7 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, QuizDetailActivity.class);
             intent.putExtra("QUIZ_ID", quiz.getId());
+            intent.putExtra("QUIZ_TITLE", quiz.getTitle());
             context.startActivity(intent);
         });
     }

@@ -1,7 +1,9 @@
 package com.example.quizzapp.api;
 
+import com.example.quizzapp.models.Question;
 import com.example.quizzapp.models.Quiz;
 import com.example.quizzapp.models.QuizDetail;
+import com.example.quizzapp.wrapper.QuizDetailResponse;
 
 import java.util.List;
 import java.util.Map;
@@ -30,7 +32,7 @@ public interface ApiInterface {
 
     // Lấy chi tiết quiz theo ID
     @GET("api/quizzes/getDetailById")
-    Call<QuizDetail> getQuizDetailById(@Query("id") String id);
+    Call<QuizDetailResponse> getQuizDetailById(@Query("id") String id);
 
     // Lấy quiz theo danh mục
     @GET("api/quizzes/getByCategory")
@@ -43,4 +45,9 @@ public interface ApiInterface {
     // Đánh giá quiz
     @POST("api/quizzes/{quizId}/rate")
     Call<Object> rateQuiz(@Path("quizId") String quizId, @Body Map<String, Float> ratingData);
+
+    @GET("api/questions/getQuestionsByQuizzId")
+    Call<List<Question>> getQuestionsByQuizId(@Query("quizId") String quizId);
+
+
 }

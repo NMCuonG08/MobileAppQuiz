@@ -28,6 +28,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".ChatbotActivity"/>
+        <activity android:name=".QuizPlayActivity"/>
+        <activity android:name=".QuizResultActivity"/>
     </application>
 
 </manifest>

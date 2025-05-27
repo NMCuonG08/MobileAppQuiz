@@ -9,12 +9,12 @@
 
     <!-- Background colors -->
     <color name="background_color">#F9FAFC</color>
-    <color name="card_background">#FFFFFF</color>
+
     <color name="surface_color">#FFFFFF</color>
 
     <!-- Text colors -->
-    <color name="text_primary">#212121</color>
-    <color name="text_secondary">#757575</color>
+
+
     <color name="text_hint">#9E9E9E</color>
     <color name="text_on_primary">#FFFFFF</color>
 
@@ -28,4 +28,29 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="transparent">#00000000</color>
+
+    <color name="option_selected">#e8f4fd</color>
+    <color name="option_correct">#d5edda</color>
+    <color name="option_incorrect">#f8d7da</color>
+
+    <!-- Primary Colors -->
+    <color name="primary_blue">#3498db</color>
+    <color name="primary_blue_dark">#2980b9</color>
+    <color name="success_green">#27ae60</color>
+    <color name="error_red">#e74c3c</color>
+
+    <!-- Background Colors -->
+    <color name="background_light">#f8f9fa</color>
+    <color name="card_background">#ffffff</color>
+
+    <!-- Text Colors -->
+    <color name="text_primary">#2c3e50</color>
+    <color name="text_secondary">#7f8c8d</color>
+
+    <!-- Border Colors -->
+    <color name="border_light">#ecf0f1</color>
+    <color name="border_selected">#3498db</color>
+    <color name="border_correct">#27ae60</color>
+    <color name="border_incorrect">#e74c3c</color>
+
 </resources>

@@ -9,6 +9,7 @@
 
     <!-- Search Bar -->
     <androidx.cardview.widget.CardView
+
         android:id="@+id/headerCard"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -23,6 +24,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -31,20 +33,25 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginStart="16dp"
+
                 android:src="@android:drawable/ic_menu_search"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:tint="#757575" />
 
-            <TextView
-                android:id="@+id/titleTextView"
+            <EditText
+                android:id="@+id/searchEditText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="14dp"
                 android:layout_marginBottom="14dp"
-                android:text="Search a quiz here"
+                android:background="@null"
+                android:hint="Search a quiz here"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:maxLines="1"
                 android:textColor="#757575"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -122,7 +129,6 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
-            android:id="@+id/btn_home"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"

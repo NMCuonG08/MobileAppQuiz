@@ -137,6 +137,7 @@
             app:tint="#FF0000" />
 
         <ImageView
+            android:id="@+id/btn_user"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -145,6 +146,7 @@
             app:tint="#757575" />
 
         <ImageView
+            android:id="@+id/history"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"

@@ -19,7 +19,7 @@
             android:name=".QuizDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,9 +27,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".MainActivity"/>
         <activity android:name=".ChatbotActivity"/>
         <activity android:name=".QuizPlayActivity"/>
         <activity android:name=".QuizResultActivity"/>
+<!--        <activity android:name=".LoginActivity"/>-->
+        <activity android:name=".UserActivity"/>
+        <activity android:name=".HistoryActivity"/>
     </application>
 
 </manifest>

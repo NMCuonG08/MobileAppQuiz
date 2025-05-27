@@ -2,9 +2,11 @@ package com.example.quizzapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -14,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.example.quizzapp.api.ApiClient;
 import com.example.quizzapp.api.ApiInterface;
 import com.example.quizzapp.models.QuizDetail;
+import com.example.quizzapp.wrapper.QuizDetailResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -25,6 +28,9 @@ public class QuizDetailActivity extends AppCompatActivity {
     private TextView titleTextView, descriptionTextView, questionCountTextView;
     private TextView categoryTextView, authorTextView, ratingTextView;
     private ProgressBar progressBar;
+
+    private Button btn_start;
+
     private String quizId; // Thay đổi từ long thành String vì MongoDB sử dụng ObjectId
 
     @Override
@@ -52,6 +58,18 @@ public class QuizDetailActivity extends AppCompatActivity {
 
         // Fetch quiz details
         fetchQuizDetail();
+
+        btn_start = findViewById(R.id.startQuizButton);
+        btn_start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Tạo Intent để mở QuizPlayActivity
+                Intent intent = new Intent(QuizDetailActivity.this, QuizPlayActivity.class);
+                intent.putExtra("QUIZ_ID", quizId);
+                startActivity(intent);
+            }
+        });
+
     }
 
     private void fetchQuizDetail() {
@@ -59,42 +77,46 @@ public class QuizDetailActivity extends AppCompatActivity {
         Log.d(TAG, "Fetching quiz details for ID: " + quizId);
 
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<QuizDetail> call = apiInterface.getQuizDetailById(quizId);
+        Call<QuizDetailResponse> call = apiInterface.getQuizDetailById(quizId);
 
-        call.enqueue(new Callback<QuizDetail>() {
+        call.enqueue(new Callback<QuizDetailResponse>() {
             @Override
-            public void onResponse(Call<QuizDetail> call, Response<QuizDetail> response) {
+            public void onResponse(Call<QuizDetailResponse> call, Response<QuizDetailResponse> response) {
                 progressBar.setVisibility(View.GONE);
+
                 if (response.isSuccessful() && response.body() != null) {
-                    Log.d(TAG, "Quiz details received successfully");
-                    displayQuizDetail(response.body());
-                } else {
-                    Log.e(TAG, "Error code: " + response.code() + " message: " + response.message());
-                    showError("Error fetching quiz details");
+                    QuizDetailResponse quizResponse = response.body();
+                    displayQuizDetail(quizResponse);
+                }else {
+                    Log.e(TAG, "Error: " + response.code() + " - " + response.message());
+                    showError("Lỗi khi lấy chi tiết quiz");
                 }
             }
 
             @Override
-            public void onFailure(Call<QuizDetail> call, Throwable t) {
+            public void onFailure(Call<QuizDetailResponse> call, Throwable t) {
                 progressBar.setVisibility(View.GONE);
-                Log.e(TAG, "Network error: " + t.getMessage(), t);
-                showError("Network error: " + t.getMessage());
+                Log.e(TAG, "Network error", t);
+                showError("Lỗi mạng: " + t.getMessage());
             }
         });
     }
 
-    private void displayQuizDetail(QuizDetail quizDetail) {
+
+    private void displayQuizDetail(QuizDetailResponse quizResponse) {
+        QuizDetail quizDetail = quizResponse.getQuizze();
+
         titleTextView.setText(quizDetail.getTitle());
         descriptionTextView.setText(quizDetail.getDescription());
-        categoryTextView.setText(quizDetail.getCategoryName());
-        authorTextView.setText("By " + quizDetail.getCreatorName());
+        categoryTextView.setText(quizResponse.getCategoryName());
+        authorTextView.setText("By " + quizResponse.getAuthor());
         ratingTextView.setText(quizDetail.getAverageRating() + " ★");
 
-        // Hiển thị số lượng câu hỏi nếu có
-        int questionCount = quizDetail.getQuestionCount();
+        // Sử dụng questionNumber từ QuizDetailResponse
+        int questionCount = quizResponse.getQuestionNumber();
         questionCountTextView.setText(questionCount > 0 ? questionCount + " Questions" : "Unknown");
 
-        // Load image with Glide
+        // Load image với Glide
         if (quizDetail.getImageUrl() != null && !quizDetail.getImageUrl().isEmpty()) {
             Glide.with(this)
                     .load(quizDetail.getImageUrl())
@@ -105,6 +127,7 @@ public class QuizDetailActivity extends AppCompatActivity {
             quizImageView.setImageResource(R.drawable.quiz_placeholder);
         }
     }
+
 
     private void showError(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();

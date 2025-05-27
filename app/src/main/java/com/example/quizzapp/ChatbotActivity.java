@@ -18,6 +18,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
@@ -185,7 +186,14 @@ public class ChatbotActivity extends AppCompatActivity {
                 url,
                 response -> {
                     String botReply = response.replaceAll("^\"|\"$", "");
+
+                    Markwon markwon = Markwon.create(context);
+                    Spanned markdownFormatted = markwon.toMarkdown(botReply);
+
+                    messageList.add(new Message(markdownFormatted, "bot"));
+
                     messageList.add(new Message(botReply, "bot"));
+
                     chatAdapter.notifyItemInserted(messageList.size() - 1);
                     chatRecyclerView.scrollToPosition(messageList.size() - 1);
                     ChatHistoryManager.saveSession(context, sessionId, messageList);
@@ -214,6 +222,14 @@ public class ChatbotActivity extends AppCompatActivity {
             }
         };
 
+// 👇 THÊM ĐOẠN NÀY ĐỂ TĂNG TIMEOUT
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                20000, // timeout 20 giây
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+        ));
+
         requestQueue.add(stringRequest);
+
     }
 }

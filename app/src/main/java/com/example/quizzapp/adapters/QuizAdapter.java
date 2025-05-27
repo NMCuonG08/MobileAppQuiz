@@ -26,6 +26,10 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
         this.quizList = quizList;
         this.context = context;
     }
+    public void updateQuizList(List<Quiz> newQuizList) {
+        this.quizList = newQuizList;
+        notifyDataSetChanged();
+    }
 
     @NonNull
     @Override
@@ -38,7 +42,6 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.QuizViewHolder
     @Override
     public void onBindViewHolder(@NonNull QuizViewHolder holder, int position) {
         Quiz quiz = quizList.get(position);
-
         holder.quizTitleTextView.setText(quiz.getTitle());
         holder.quizDescriptionTextView.setText(quiz.getDescription());
         holder.questionCountTextView.setText(quiz.getQuestionCount() + " Questions");

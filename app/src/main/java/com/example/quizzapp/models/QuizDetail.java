@@ -31,7 +31,8 @@ public class QuizDetail {
 
     @SerializedName("image")
     private String imageUrl;
-
+    @SerializedName("questionNumber")
+    private int questionNumber;
     @SerializedName("rating")
     private float averageRating;
 
@@ -99,7 +100,8 @@ public class QuizDetail {
     }
 
     public int getQuestionCount() {
-        return questions != null ? questions.size() : 0;
+        return questionNumber > 0 ? questionNumber : 0;
+
     }
 
     public List<Object> getQuestions() {
